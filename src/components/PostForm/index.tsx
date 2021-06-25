@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { trigger } from "swr";
 import api from "../../services/api";
 
@@ -10,7 +11,13 @@ const PostForm: React.FC = () => {
   const [content, setContent] = useState("");
 
   const handleSubmit = async () => {
-    await api.post("/feed", { content });
+    try{
+      await api.post("/feed", { content });
+    }catch(error){
+      toast.error(error.data?.response?.message || "Ocorreu algum erro")
+      return;
+    }
+    
     setContent("")
     trigger(apiUrl + "/feeds");
   };

@@ -3,10 +3,13 @@ import { useFetch } from "./useFetch";
 
 export function usePost() {
   const { data } = useFetch("/feeds", async () => {
-    const { data } = await api.get("/feeds");
-
-    return data;
+    try {
+      const { data } = await api.get("/feeds");
+      return data;
+    } catch (error) {
+      throw new Error("Ocorreu um erro");
+    }
   });
 
-  return data
+  return data;
 }
